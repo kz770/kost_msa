@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript">
+        $(function(){
+            // 도서명, 도서번호 출력
+            $.ajax({
+                url:"http://localhost:8080/book/list",
+                success:function(res){
+                    $.each(res, function(){
+                        //화면에 보여주는건 bookname, 서버로 보내주는건 bookid
+                        let row = $("<option></option>").html(this.bookname).attr("value",this.bookid);
+                        $("#bookid").append(row);
+                    });
+                }
+            });
+            //고객명, 고객번호 출력
+            $.ajax({
+                url:"http://localhost:8080/customer/list",
+                success:function(res){
+                    $.each(res, function(){
+                        let row = $("<option></option>").html(this.name).attr("value",this.custid);
+                        $("#custid").append(row);
+                    });
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+<h1>Insert Form</h1>
+<hr>
+<form action="/orders/insert" method="post">
+    주문번호 : <input type="text" name="orderid"><br>
+    고객번호 : <select id="custid" name="custid"></select><br>
+    도서번호 : <select id="bookid" name="bookid"></select><br>
+    주문가격 : <input type="text" name="saleprice"><br>
+    주문날짜 : <input type="date" name="orderdate"><br>
+    <input type="submit" value="주문">
+    <input type="reset" value="다시입력">
+</form>
+</body>
+</html>
